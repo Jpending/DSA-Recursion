@@ -177,8 +177,24 @@ let maze = [
 
 // Hint: For your algorithm, you might want to think about a prefix and use that to create the new words. For example, given "east", use "e" as a prefix and place it in front of all 6 permutations of "ast" — "ast", "ats", "sat", "sta", "tas", and "tsa". This will give you the words "east", "eats", "esat", "esta", "etas", and "etsa". Continue this way until you find all the anagrams for "east". Then you can use "a" as a prefix and permute the remaining words "est". For "east", there should be 24 words.
 
+const anagramFinder = function (word) {
+  let list = [];
+  if (word.length === 1) {
+    list.push(word[0]);
+    return list;
+  }
+  for (let i = 0; i < word.length; i++) {
+    const prefix = word[i];
+    const rest = word.substring(0, i) + word.substring(i + 1);
+    let words = anagramFinder(rest);
+    for (let j = 0; j < words.length; j++) {
+      list.push(prefix + words[j]);
+    }
+  }
+  return list;
+};
 
-
+// console.log(anagramFinder('east'))
 
 // 11. Organization Chart
 // Write a recursive function that prints the following organization chart. Your output should be as shown below with proper indentation to show the hierarchy. You may store the org chart in an object and send that as an input to your program.
@@ -220,8 +236,76 @@ let maze = [
 //             Ana
 //             Wes
 
+const evilCorp = {
+  Zuckerberg: {
+    Schroepfer: {
+      Bosworth: {
+        Steve: {},
+        Kyle: {},
+        Andra: {}
+      },
+      Zhao: {
+        Richie: {},
+        Sofia: {}
+      }
+    },
+    Schrage: {
+      VanDyck: {
+        Sabrina: {},
+        Michelle: {},
+        Josh: {}
+      },
+      Swain: {
+        Blanch: {},
+        Tom: {},
+        Joe: {}
+      }
+    },
+    Sandberg: {
+      Goler: {
+        Eddie: {},
+        Julie: {},
+        Annie: {}
+      },
+      Hernandez: {
+        Rowi: {},
+        Inga: {},
+        Morgan: {}
+      },
+      Moissinac: {
+        Amy: {},
+        Chuck: {},
+        Vinni: {}
+      },
+      Kelley: {
+        Eric: {},
+        Ana: {},
+        Wes: {}
+      }
+    }
+  }
+};
 
+const orgChart = function (obj, indent = '  ') {
+  let iCharted = '';
+  for (let key in obj) {
+    iCharted = `${iCharted}${indent}${key}\n`;
+    iCharted = `${iCharted}${orgChart(obj[key], indent + '     ')}`;
+  }
+  return iCharted;
+};
+
+console.log(orgChart(evilCorp))
 
 
 // 12. Binary Representation
 // Write a recursive function that prints out the binary representation of a given number. For example, the program should take 3 as an input and print 11 as output, or 25 as an input and print 11001 as an output. Note that the binary representation of 0 should be 0.
+
+function toBinary(num) {
+  num = num | 0
+  if (num <= 1) return num.toString();
+  const bits = (num % 2).toString()
+  return toBinary(num / 2) + bits
+}
+
+// console.log(toBinary(25))
